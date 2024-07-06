@@ -91,14 +91,17 @@ const PatientERQueue = () => {
 		mutatePendingForRelease,
 		mutatePendingPatient,
 		mutateNowServingPatient,
-	} = useERQueue();
+	} = useQueue();
 	const referToSphModalRef = useRef(null);
 	const [appointment, setAppointment] = useState(null);
 	useNoBugUseEffect({
 		functions: () => {},
 	});
 	const isDoctor = () => {
-		return user?.type == "rhu-doctor" || user?.type == "RHU-DOCTOR";
+		const userType = user?.type?.toLowerCase();
+		return userType === "RHU-DOCTOR"
+		|| userType === "HIS-DOCTOR"
+		|| userType === "HIS-MD";
 	};
 
 	const listPending = () => {

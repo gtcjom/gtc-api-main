@@ -28,6 +28,7 @@ import InfoText from "../../components/InfoText";
 import CaseDetails from "../doctor-patient-queue/components/CaseDetails";
 import { caseCodes } from "../../libs/caseCodes";
 import { procedureRates } from "../../libs/procedureRates";
+import BillingStatement from "../../components/cashier-billing/component/BillingStatement";
 
 const PatientProfile = ({ patient }) => {
 	return (
@@ -157,6 +158,7 @@ const PatientPharmacyQueue = () => {
 							pendingMedsRelease?.data?.length == 0 ? (
 								<span className="text-center py-20 font-bold text-slate-400">
 									No patients in queue.
+									<BillingStatement />
 								</span>
 							) : (
 								<>

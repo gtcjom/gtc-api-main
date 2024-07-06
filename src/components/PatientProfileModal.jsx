@@ -32,6 +32,8 @@ import AppointmentDetails from "../pages/appointments/components/AppointmentDeta
 import PatientInfo from "../pages/patients/components/PatientInfo";
 import useNoBugUseEffect from "../hooks/useNoBugUseEffect";
 import PatientVitalCharts from "./PatientVitalCharts";
+import UploadCSROrderModal from "../pages/department/his-nurse/components/modal/UploadCSROrderModal";
+import PatientCSROrder from "../pages/department/his-nurse/components/PatientCSROrder";
 
 const AppointmentData = ({ mutateAll, appointment = null }) => {
 	const {
@@ -349,7 +351,7 @@ const PatientProfileModal = (props, ref) => {
 													""
 												)}
 
-												{/* 
+												
 												<ActionBtn
 															loading={
 																loadingDone
@@ -403,7 +405,7 @@ const PatientProfileModal = (props, ref) => {
 																	free to go
 																</span>
 															</div>
-														</ActionBtn> */}
+														</ActionBtn>
 											</div>
 										</div>
 										<div>
@@ -578,6 +580,34 @@ const PatientProfileModal = (props, ref) => {
 														),
 														content: (
 															<PatientPrescriptions
+																patient={
+																	patient
+																}
+															/>
+														),
+													},
+													{
+														title: (
+															<MenuTitle src="/laboratory/ultrasound.png">
+																CSR
+																{JSON.stringify(
+																	showData?.csr_sipplies ||
+																		{}
+																).includes(
+																	`"type":"csr"`
+																) ? (
+																	<>
+																		<span className="text-white bg-red-600 absolute top-1 right-1 rounded-full w-3 h-3 flex items-center justify-center animate-ping"></span>
+																		<span className="text-white bg-red-600 absolute top-1 right-1 rounded-full w-3 h-3 flex items-center justify-center animate-"></span>
+																		<span className="absolute top-0 rounded-xl left-0 h-full w-full border border-red-500 animate-pulse"></span>
+																	</>
+																) : (
+																	""
+																)}
+															</MenuTitle>
+														),
+														content: (
+															<PatientCSROrder 
 																patient={
 																	patient
 																}

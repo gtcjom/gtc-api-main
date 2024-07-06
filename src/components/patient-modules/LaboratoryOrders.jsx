@@ -116,10 +116,10 @@ const LaboratoryOrders = (props) => {
 	const { user } = useAuth();
 
 	const isLaboratoryUser = () => {
-		return user?.type == "RHU-XRAY" || user?.type == "RHU-LAB";
+		return user?.type == "HIS-Imaging" || user?.type == "HIS-Laboratory";
 	};
 	const isXrayUser = () => {
-		return user?.type === "RHU-XRAY";
+		return user?.type === "HIS-Imaging";
 	};
 	const testHeader = isXrayUser() ? "Imaging Test" : "Laboratory Test";
 	const {
@@ -361,7 +361,13 @@ const LaboratoryOrders = (props) => {
 							: "Laboratory Order"
 					}
 				>
-					{user?.type == "RHU-DOCTOR" && allowCreate ? (
+					{/* <ActionBtn className="ml-auto"
+					onClick={() => {
+						CreateLabOrderModal();
+					}}>
+						Create Laboratory Order
+					</ActionBtn> */}
+					{user?.type == "HIS-Doctor" || user?.type == "HIS-MD" && allowCreate ? (
 						<ActionBtn
 							className="px-4 rounded-xl"
 							size="sm"

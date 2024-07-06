@@ -40,6 +40,7 @@ import UploadUpperAbdomenModal from './modals/imaging/ultrasound/UploadUpperAbdo
 import UploadVDLESModal from './modals/imaging/ultrasound/UploadVDLESModal';
 import UploadWabAppendixModal from './modals/imaging/ultrasound/UploadWabAppendixModal';
 import UploadWholeAbdomenModal from './modals/imaging/ultrasound/UploadWholeAbdomenModal';
+import { useAuth } from '../../hooks/useAuth';
 
 const Status = ({ status }) => {
 	const color = () => {
@@ -73,10 +74,10 @@ const ImagingOrder = (props) => {
 	const { user } = useAuth();
 
 	const isLaboratoryUser = () => {
-		return user?.type == "RHU-XRAY" || user?.type == "RHU-LAB";
+		return user?.type == "HIS-Imaging" || user?.type == "HIS-Laboratory";
 	};
 	const isXrayUser = () => {
-		return user?.type === "RHU-XRAY";
+		return user?.type === "HIS-Imaging";
 	};
 	const testHeader = isXrayUser() ? "Imaging Test" : "Laboratory Test";
 	const {
@@ -234,7 +235,7 @@ const ImagingOrder = (props) => {
 							: "Laboratory Order"
 					}
 				>
-					{user?.type == "RHU-DOCTOR" && allowCreate ? (
+					{user?.type == "HIS-Doctor" && allowCreate ? (
 						<ActionBtn
 							className="px-4 rounded-xl"
 							size="sm"

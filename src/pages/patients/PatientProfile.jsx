@@ -117,8 +117,9 @@ const PatientProfile = (props) => {
 						type="secondary"
 						className="ml-auto h-12 !rounded-[30px] font-medium gap-2 px-4"
 						onClick={() => {
-							ERCareChoiceRef.current.show();
-							//privacyRef.current.show({ patient: patient });
+							// ERCareChoiceRef.current.show();
+							createAppointmentRef.current.show(patient.id);
+							// privacyRef.current.show({ patient: patient });
 						}}
 					>
 						<FlatIcon icon="bs-add" />
@@ -262,15 +263,7 @@ const PatientProfile = (props) => {
 							),
 							content: <PatientAppointments patient={patient} />,
 						},
-						{
-							title: (
-								<MenuTitle src="/vitals/vitals.png">
-									Vital signs
-								</MenuTitle>
-							),
-
-							content: <PatientVitals patient={patient} />,
-						},
+						
 						{
 							title: (
 								<MenuTitle src="/vitals/vitals.png">

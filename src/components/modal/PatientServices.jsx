@@ -26,9 +26,56 @@ import ReleaseMedStep1 from "../../pages/appointments/components/ReleaseMedStep1
 import ReleaseMedStep2 from "../../pages/appointments/components/ReleaseMedStep2";
 import ReleaseMedStep3 from "../../pages/appointments/components/ReleaseMedStep3";
 import { mutate } from "swr";
+import Pagination from "../table/Pagination";
+import Table from "../table/Table";
+import useDataTable from "../../hooks/useDataTable";
+import UploadCSROrderModal from "../../pages/department/his-nurse/components/modal/UploadCSROrderModal";
+import UploadPharmacyOrderModal from "../../pages/department/his-nurse/components/modal/UploadPharmacyOrderModal";
+import UpdatePatientVitalsModal from "./UpdatePatientVitalsModal";
+import TabGroup from "../TabGroup";
+import MenuTitle from "../buttons/MenuTitle";
+import PatientVitals from "../PatientVitals";
 
 const uniq_id = uuidv4();
+
+const Card = ({ title, children, icon, color }) => {
+	return (
+		<div className="shadow-sm rounded-xl flex items-center p-3 w-1/2 2xl:w-[calc(100%/3-24px)] border-[0.5px] border-blue-300">
+			<div className="flex flex-col pb-3">
+				<h3
+					className="text-base font-bold text-gray-900 mb-0 text-opacity-75"
+					style={{ color: color }}
+				>
+					{title}
+				</h3>
+				<div className="h-[3px] w-4/5 bg-blue-300 mb-[1px]" />
+				<div className="h-[2px] w-2/5 bg-red-300 mb-3" />
+				{children}
+			</div>
+			<div className="p-1 bg-white bg-opacity-5 rounded-xl ml-auto">
+				<img
+					src={`/vitals/${icon}.png`}
+					className="w-10 object-contain"
+				/>
+			</div>
+		</div>
+	);
+};
+
+const ICUNurseQueue = ({ isICUNurse, loading, data, page, setPage, meta, paginate, setPaginate }) => {
+	if (isICUNurse) {
+	  return null;
+	}
+}
+
 const PatientServices = (props) => {
+	const [vitals, setVitals] = useState(false);
+	const [update, setUpdate] = useState(false);
+	const updateVitalRef = useRef(null);
+	const {showTitle = true} = props;
+	const { patient } = props;
+	const csrFormRef = useRef(null);
+	const pharmacyFormRef = useRef(null);
 	const { appointment, setAppointment, mutateAll } = props;
 	const { user } = useAuth();
 	const {
@@ -41,6 +88,26 @@ const PatientServices = (props) => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
+
+	const {
+        page,
+        setPage,
+        meta,
+        setMeta,
+        paginate,
+        setPaginate,
+        data,
+        setData,
+        column,
+        setColumn,
+        direction,
+        setDirection,
+        filters,
+        setFilters,
+        reloadData,
+    } = useDataTable({
+        url: `/v1/anesthesia/patient-csr/patient/${patient?.id}`,
+    });
 
 	useNoBugUseEffect({
 		functions: () => {
@@ -493,7 +560,348 @@ const PatientServices = (props) => {
 									/>
 								)}
 							/>
+							{/* Date input field */}
+							<Controller
+							name="operation_date"
+							control={control}
+							rules={{
+								required: {
+									value: true,
+									message: "This field is required",
+								},
+							}}
+							render={({
+								field: { onChange, onBlur, value, ref },
+								fieldState: { error },
+							}) => (
+                            <div className="flex flex-col">
+                                <label className="text-sm text-gray-600">
+                                    Operation Date
+                                </label>
+                                <input
+                                    type="date"
+                                    className="input"
+                                    ref={ref}
+                                    value={value}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                />
+                                {error && <span className="text-red-500 text-sm">{error.message}</span>}
+                            </div>
+                        )}
+                    />
+                    {/* Time input field */}
+                    <Controller
+                        name="operation_time"
+                        control={control}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: "This field is required",
+                            },
+                        }}
+                        render={({
+                            field: { onChange, onBlur, value, ref },
+                            fieldState: { error },
+                        }) => (
+                            <div className="flex flex-col">
+                                <label className="text-sm text-gray-600">
+                                    Operation Time
+                                </label>
+                                <input
+                                    type="time"
+                                    className="input"
+                                    ref={ref}
+                                    value={value}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                />
+                                {error && <span className="text-red-500 text-sm">{error.message}</span>}
+                            </div>
+                        )}
+                    />
 						</div>
+						<Controller
+							name="procedure"
+							control={control}
+							rules={{
+								required: {
+									value: true,
+									message:
+										"This field is required",
+								},
+							}}
+							render={({
+								field: {
+									onChange,
+									onBlur,
+									value,
+									name,
+									ref,
+								},
+								fieldState: {
+									invalid,
+									isTouched,
+									isDirty,
+									error,
+								},
+							}) => (
+								<ReactSelectInputField
+									isClearable={false}
+									label={
+										<>
+											Delivery Procedure
+											<span className="text-danger ml-1">
+												*
+											</span>
+										</>
+									}
+									inputClassName=" "
+									ref={ref}
+									value={value}
+									onChange={onChange}
+									onBlur={onBlur} // notify when input is touched
+									error={error?.message}
+									placeholder="Select Delivery Type"
+									options={[
+										// {
+										// 	label: "Provincial Hospital (PH)",
+										// 	value: "PH",
+										// },
+										{
+											label: "Cesarean section",
+											value: "Cesarean section",
+										},
+										
+										// {
+										// 	label: "Barangay Health Station (BHS)",
+										// 	value: "BHS",
+										// },
+									]}
+								/>
+							)}
+						/>
+						
+							<UpdatePatientVitalsModal
+								ref={updateVitalRef}
+								onSuccess={(data) => {
+									console.log("onSuccess", getPatientVitals(patient));
+									if (mutateAll) mutateAll();
+									if (onSuccess) onSuccess(data);
+								}}
+							/>
+						</div>
+
+						{/* <div>
+							<ContentTitle title="CSR" />
+							<ActionBtn
+								type="success"
+								title="Add CSR"
+								className="h-8 w-8 ml-auto !rounded-md mb-2"
+								onClick={() => {
+									csrFormRef.current.show(patient);
+									console.log('patient CSR Modal Patient:', patient);
+								}}
+							>
+								<FlatIcon icon="rr-plus" className="mt-1 text-xl" />
+							</ActionBtn>
+							<div className="flex flex-col items-start">
+								<Table
+									className={`pb-2`}
+									loading={loading}
+									columns={[
+										{
+											header: "Date",
+											className: "text-left w-[150px]",
+											tdClassName: "text-left",
+											key: "date",
+											cell: (data) => {
+												return formatDateMMDDYYYY(new Date(data?.date));
+											},
+										},
+										{
+											header: "Supplies/Medicines",
+											className: "text-left",
+											tdClassName: "text-left",
+											key: "inventory_csrs_id",
+											cell: (data) => {
+												return data?.relationships?.inventory_csrs_id?.csr_supplies;
+											},
+										},
+										{
+											header: "Doctor",
+											className: "text-left",
+											tdClassName: "text-left",
+											key: "doctor_id",
+											cell: (data) => {
+												return (
+													<div className="flex flex-col">
+														<span className="font-medium text-black -mb-[4px]">
+															{doctorName(data?.relationships?.doctor)}
+														</span>
+														<span className="text-[10px] font-light">
+															{doctorSpecialty(data?.relationships?.doctor)}
+														</span>
+													</div>
+												);
+											},
+										},
+										{
+											header: "Quantity",
+											className: "text-center w-[100px]",
+											tdClassName: "text-center",
+											key: "quantity",
+											cell: (data) => {
+												return data?.quantity;
+											},
+										},
+										// {
+										//     header: "Status",
+										//     className: "text-center w-[150px]",
+										//     tdClassName: "text-center",
+										//     key: "order_status",
+										// },
+									]}
+									data={data}
+								/>
+								<Pagination
+									page={page}
+									setPage={setPage}
+									pageCount={meta?.last_page}
+									pageSize={paginate}
+									setPageSize={setPaginate}
+								/>
+							</div>
+							<UploadCSROrderModal ref={csrFormRef} patient={patient} />
+						</div> */}
+
+						<div>
+							<ContentTitle title="Pharmacy Order" />
+							<ActionBtn
+								type="success"
+								title="Add Pharmacy"
+								className="h-8 w-8 ml-auto !rounded-md mb-2"
+								onClick={() => {
+									pharmacyFormRef.current.show(patient);
+									console.log('patient CSR Modal Patient:-------------------------------', patient)
+								}}
+							>
+								<FlatIcon
+									icon="rr-plus"
+									className="mt-1 text-xl"
+								/>
+							</ActionBtn> 
+							<div className="flex flex-col items-start">	
+									<Table
+										className={`pb-2`}
+										loading={loading}
+										columns={[
+											{
+												header: "Date",
+												className: "text-left w-[150px]",
+												tdClassName: "text-left",
+												key: "date",
+												cell: (data) => {
+													return formatDateMMDDYYYY(
+														new Date(data?.date)
+													);
+												},
+											},
+											{
+												header: "Supplies/Medicines",
+												className: "text-left",
+												tdClassName: "text-left",
+												key: "inventory_pharmacies_id",
+												cell: (data) => {
+															return data?.relationships?.inventory_pharmacies_id?.pharmacy_supplies;
+														},
+											},
+											{
+												header: "Doctor",
+												className: "text-left",
+												tdClassName: "text-left",
+												key: "doctor_id",
+												cell: (data) => {
+													return (
+														<div className="flex flex-col">
+															<span className="font-medium text-black -mb-[4px]">
+																{doctorName(
+																	data?.relationships?.doctor
+																)}
+															</span>
+															<span className="text-[10px] font-light">
+																{doctorSpecialty(
+																	data?.relationships?.doctor
+																)}
+															</span>
+														</div>
+													);
+												},
+											},
+											{
+												header: "Quantity",
+												className: "text-center w-[100px] ",
+												tdClassName: "text-center",
+												key: "quantity",
+												cell: (data) => {
+															return data?.quantity;
+														},
+											},
+											// {
+											// 	header: "Status",
+											// 	className: "text-center w-[150px] ",
+											// 	tdClassName: "text-center",
+											// 	key: "order_status",
+											// 	// cell: (data) => {
+											// 	// 	return <Status status={data?.order_status} />;
+											// 	// },
+											// },
+											
+											// {
+											// 	header: "Delete",
+											// 	className: `text-center ${isDoctor() ? "" : "hidden"}`,
+											// 	tdClassName: `text-center ${
+											// 		isDoctor() ? "" : "hidden"
+											// 	}`,
+											// 	key: "delete",
+											// 	cell: (data) => {
+											// 		return (
+											// 			<div className="w-full flex items-center">
+											// 				{/* {JSON.stringify(data)} */}
+											// 				<ActionBtn
+											// 					size="sm"
+											// 					type="danger"
+											// 					disabled={
+											// 						data?.order_status ==
+											// 						"for-result-reading"
+											// 					}
+											// 					className=" mx-auto"
+											// 					onClick={() => {
+											// 						deleteLabOrderRef.current.show(
+											// 							data
+											// 						);
+											// 					}}
+											// 				>
+											// 					<FlatIcon icon="rr-trash" /> Delete
+											// 				</ActionBtn>
+											// 			</div>
+											// 		);
+											// 	},
+											// },
+										]}
+										data={data}
+									/>
+									<Pagination
+										page={page}
+										setPage={setPage}
+										pageCount={meta?.last_page}
+										pageSize={paginate}
+										setPageSize={setPaginate}
+									/>
+								</div>
+								
+								<UploadPharmacyOrderModal ref={pharmacyFormRef} patient={patient}/>
+							</div>
 
 						<ActionBtn
 							className="px-4 !rounded-2xl w-full"
@@ -509,7 +917,6 @@ const PatientServices = (props) => {
 							Send patient to doctor
 						</ActionBtn>
 					</div>
-				</div>
 			)}
 		</div>
 	);

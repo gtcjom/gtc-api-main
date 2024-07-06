@@ -1,6 +1,6 @@
 
 import useDataTable from "../../../hooks/useDataTable";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FlatIcon from "../../FlatIcon";
 import InfoTextForPrint from "../../InfoTextForPrint";
 import { dateToday, formatDate } from "../../../libs/helpers";
@@ -10,6 +10,7 @@ import SummaryWithPhic from "./billing/SummaryWithPhic";
 import ProfessionalFeeSOA from "./billing/ProfessionalFeeSOA";
 import { useAuth } from "../../../hooks/useAuth";
 import useNoBugUseEffect from "../../../hooks/useNoBugUseEffect";
+// import { useReactToPrint } from "react-to-print";
 
 /* eslint-disable react/prop-types */
 const BillingStatement = (props) => {

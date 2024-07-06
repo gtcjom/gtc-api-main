@@ -1,6 +1,6 @@
 import React, { Fragment, forwardRef, useImperativeHandle, useState } from 'react'
-import upload from "../../../../assets/images/camera.png";
-import { Controller, useFormContext } from 'react-hook-form';
+import upload from "../../../../../assets/images/camera.png";
+import { Controller, useForm, useFormContext } from 'react-hook-form';
 import useLabQueue from '../../../../../hooks/useLabQueue';
 import useNoBugUseEffect from '../../../../../hooks/useNoBugUseEffect';
 import Axios from '../../../../../libs/axios';
@@ -10,6 +10,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import ImagePicker from '../../../../inputs/ImagePicker';
 import ReactQuillField from '../../../../inputs/ReactQuillField';
 import ActionBtn from '../../../../buttons/ActionBtn';
+
 const UploadBiopsyModal = (props, ref) => {
     const { patient, onSuccess } = props;
 	const {
@@ -21,7 +22,7 @@ const UploadBiopsyModal = (props, ref) => {
 		reset,
 		handleSubmit,
 		formState: { errors },
-	} = useFormContext();
+	} = useForm();
 
 	const { pending } = useLabQueue();
 	const [image, setImage] = useState(null);

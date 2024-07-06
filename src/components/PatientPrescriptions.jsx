@@ -56,7 +56,24 @@ const PatientPrescriptions = (props) => {
 				) : (
 					""
 				)} */}
+				{user?.type == "HIS-Doctor" || user?.type == "HIS-MD" && allowCreate ? (
+						<ActionBtn
+							className="px-4 rounded-xl"
+							size="sm"
+							type="success"
+							onClick={() => {
+								createPrescriptionRef.current.show();
+								// setUpdate(true);
+							}}
+						>
+							<FlatIcon icon="rr-edit" className="mr-1" />
+							Add Prescription
+						</ActionBtn>
+					) : (
+						""
+					)}
 			</ContentTitle>
+			
 			<Table
 				className={`pb-2`}
 				loading={loading}

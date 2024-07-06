@@ -103,13 +103,21 @@ const PatientAppointments = (props) => {
 						header: "Action",
 						className: `w-[250px] hidden ${
 							user?.type == "rhu-nurse" ||
-							user?.type == "RHU-NURSE"
+							user?.type == "RHU-NURSE" ||
+							user?.type == "his-nurse" ||
+							user?.type == "HIS-NURSE" ||
+							user?.type == "his-opd-nurse" ||
+							user?.type == "HIS-OPD-NURSE"
 								? "hidden"
 								: ""
 						}`,
 						tdClassName: `text-center hidden ${
 							user?.type == "rhu-nurse" ||
-							user?.type == "RHU-NURSE"
+							user?.type == "RHU-NURSE" ||
+							user?.type == "his-nurse" ||
+							user?.type == "HIS-NURSE" ||
+							user?.type == "his-opd-nurse" ||
+							user?.type == "HIS-OPD-NURSE"
 								? "hidden"
 								: ""
 						}`,

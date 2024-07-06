@@ -17,10 +17,21 @@ import RHUPharmaLinks from "../../userLinks/RHUPharmaLinks";
 import useNoBugUseEffect from "../../hooks/useNoBugUseEffect";
 import { detectMobile } from "../../libs/helpers";
 import RHUCashierLinks from "../../userLinks/RHUCashierLinks";
+import HISAdminLink from "../../userLinks/hmis/HISAdminLink";
 import HISAnesthesiaLink from "../../userLinks/hmis/HISAnesthesiaLink";
-import HISNurseLink from "../../userLinks/hmis/HISNurseLink";
 import HISAnesthesiaMonitorLink from "../../userLinks/hmis/HISAnesthesiaMonitorLink";
+import HISCashierLink from "../../userLinks/hmis/HISCashierLink";
+import HISDoctorLink from "../../userLinks/hmis/HISDoctorLink";
 import HISErLink from "../../userLinks/hmis/HISErLink";
+import HISImagingLink from "../../userLinks/hmis/HISImagingLink";
+import HISLabLinks from "../../userLinks/hmis/HISLabLinks";
+import HISNurseLink from "../../userLinks/hmis/HISNurseLink";
+import HISPharmalink from "../../userLinks/hmis/HISPharmaLink";
+import HISDeliveryLink from "../../userLinks/hmis/HISDeliveryLink";
+import HISOPDInfectiousLink from "../../userLinks/hmis/HISOPDInfectiousLink";
+import HISICUNurseLink from "../../userLinks/hmis/HISICUNurseLink";
+import HISOPDNurseLink from "../../userLinks/hmis/HISOPDNurseLink";
+
 const AppLayout = (props) => {
 	useReValidateAuth();
 	const confirmLogoutRef = useRef(null);
@@ -57,28 +68,51 @@ const AppLayout = (props) => {
 			case "rhu-doctor":
 				return <RHUDoctorLinks isActive={isActive} />;
 
-			case "rhu-lab":
-				return <RHULabLinks isActive={isActive} />;
-
-			case "rhu-xray":
-				return <RHUImagingLinks isActive={isActive} />;
-
-			case "rhu-cashier":
-				return <RHUCashierLinks isActive={isActive} />;
-
-			case "rhu-pharmacy":
-				return <RHUPharmaLinks isActive={isActive} />;
-
-			case "rhu-admin":
-				return <RHUAdminLinks isActive={isActive} />;
-			case "his-monitoring":
-				return <HISAnesthesiaMonitorLink isActive={isActive} />;
-			case "his-anesthesia":
-				return <HISAnesthesiaLink isActive={isActive} />;
 			case "his-nurse":
 				return <HISNurseLink isActive={isActive} />;
+
+			case "his-doctor":
+				return <HISDoctorLink isActive={isActive} />;
+
+			case "his-laboratory":
+				return <HISLabLinks isActive={isActive} />;
+
+			case "his-xray":
+				return <HISImagingLink isActive={isActive} />;
+
+			case "his-cashier":
+				return <HISCashierLink isActive={isActive} />;
+
+			case "his-pharmacy":
+			case "rhu-pharmacy":
+				return <HISPharmalink isActive={isActive} />;
+
+			case "his-admin":
+				return <HISAdminLink isActive={isActive} />;
+
+			case "his-monitoring":
+				return <HISAnesthesiaMonitorLink isActive={isActive} />;
+
+			case "his-anesthesia":
+				return <HISAnesthesiaLink isActive={isActive} />;
+				
 			case "his-er":
 				return <HISErLink isActive={isActive} />;
+
+			case "his-opd-infectious":
+			return <HISOPDInfectiousLink isActive={isActive} />;
+
+			case "his-delivery":
+				return <HISDeliveryLink isActive={isActive} />;
+
+			case "icu-nurse":
+				return <HISICUNurseLink isActive={isActive} />;
+
+			case "his-md":
+				return <HISMDLink isActive={isActive} />;
+
+			case "his-opd-nurse":
+				return <HISOPDNurseLink isActive={isActive} />;
 
 			default:
 				break;

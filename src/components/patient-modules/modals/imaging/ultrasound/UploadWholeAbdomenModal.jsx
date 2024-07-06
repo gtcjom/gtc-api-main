@@ -1,5 +1,5 @@
 import React, { Fragment, forwardRef, useImperativeHandle, useState } from 'react'
-import upload from "../../../../assets/images/camera.png";
+import upload from "../../../../../assets/images/camera.png";
 import { Controller, useForm } from 'react-hook-form';
 import useLabQueue from '../../../../../hooks/useLabQueue';
 import useNoBugUseEffect from '../../../../../hooks/useNoBugUseEffect';
@@ -268,7 +268,7 @@ const UploadWholeAbdomenModal = (props, ref) => {
 					</div>
 				</div>
 			</Dialog>
-		</Transition>
+	</Transition>
   )
 }
 

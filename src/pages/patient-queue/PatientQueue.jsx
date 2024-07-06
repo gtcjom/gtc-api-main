@@ -101,7 +101,9 @@ const PatientQueue = () => {
 		functions: () => {},
 	});
 	const isDoctor = () => {
-		return user?.type == "rhu-doctor" || user?.type == "RHU-DOCTOR";
+		return user?.type == "rhu-doctor" || user?.type == "RHU-DOCTOR"
+		|| user?.type == "his-doctor" || user?.type == "HIS-DOCTOR"
+		|| user?.type == "his-md" || user?.type == "HIS-MD";
 	};
 
 	const listPending = () => {

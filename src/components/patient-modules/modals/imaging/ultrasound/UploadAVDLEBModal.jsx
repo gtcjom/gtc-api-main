@@ -1,12 +1,12 @@
 import React, { Fragment, forwardRef, useImperativeHandle, useState } from 'react'
-import upload from "../../../../assets/images/camera.png";
+import upload from "../../../../../assets/images/camera.png";
 import useLabQueue from '../../../../../hooks/useLabQueue';
 import useNoBugUseEffect from '../../../../../hooks/useNoBugUseEffect';
 import Axios from '../../../../../libs/axios';
 import { toast } from 'react-toastify';
 import { Dialog, Transition } from '@headlessui/react';
 import { dataURItoBlob } from '../../../../../libs/helpers';
-import { Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import ImagePicker from '../../../../inputs/ImagePicker';
 import ReactQuillField from '../../../../inputs/ReactQuillField';
 import ActionBtn from '../../../../buttons/ActionBtn';

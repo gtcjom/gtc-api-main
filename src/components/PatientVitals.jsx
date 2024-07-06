@@ -9,6 +9,8 @@ import FlatIcon from "./FlatIcon";
 import useNoBugUseEffect from "../hooks/useNoBugUseEffect";
 import Axios from "../libs/axios";
 import ContentTitle from "./buttons/ContentTitle";
+import TabGroup from "./TabGroup";
+import MenuTitle from "./buttons/MenuTitle";
 
 const Card = ({ title, children, icon, color }) => {
 	return (
@@ -73,7 +75,7 @@ const PatientVitals = (props) => {
 	return (
 		<div className="flex flex-col items-start">
 			{showTitle ? (
-				<ContentTitle title="Patient Vitals">
+				<ContentTitle title="">
 					{/* <ActionBtn
 						size="sm"
 						onClick={() => {
@@ -86,7 +88,8 @@ const PatientVitals = (props) => {
 					</ActionBtn> */}
 				</ContentTitle>
 			) : (
-				<div className="flex items-center gap-4 pb-2">
+				<div className="flex gap-4 pb-4 ml-auto">
+					
 					{vitals?.updated_at ? (
 						<>
 							<span className="text-base">
